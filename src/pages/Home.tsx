@@ -12,15 +12,21 @@ const HomeContainer = styled.div`
   background-color: white;
   
   @media (max-width: 768px) {
-    height: calc(100vh - 85px);
+    height: calc(70vh - 85px);
     padding: 0 1.5rem;
     border-radius: 25px;
   }
   
   @media (max-width: 480px) {
-    height: calc(100vh - 80px);
+    height: calc(60vh - 80px);
     padding: 0 1rem;
     border-radius: 20px;
+  }
+  
+  @media (max-width: 360px) {
+    height: calc(50vh - 70px);
+    padding: 0 0.8rem;
+    border-radius: 15px;
   }
 `;
 
