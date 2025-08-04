@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SearchSection from '../components/SearchSection';
 import AdvertSection from '../components/AdvertSection';
 import DashboardSection from '../components/DashboardSection';
+import Footer from '../components/Footer';
 
 const HomeContainer = styled.div`
   width: 100%;
@@ -127,6 +128,7 @@ const Home: React.FC = () => {
       <SearchSection />
       <AdvertSection />
       <DashboardSection />
+      <Footer />
     </>
   );
 };

@@ -29,16 +29,16 @@ const SectionTitle = styled.h2`
   text-align: center;
   margin: 0;
   line-height: 1.2;
-  padding-top: 4rem;
+  padding-top: 2rem;
   
   @media (max-width: 768px) {
     font-size: 2.5rem;
-    padding-top: 3rem;
+    padding-top: 1.5rem;
   }
   
   @media (max-width: 480px) {
     font-size: 2rem;
-    padding-top: 2rem;
+    padding-top: 1rem;
   }
 `;
 
@@ -155,15 +155,22 @@ const Dropdown = styled.div<{ isOpen: boolean }>`
   z-index: 1000;
   display: ${props => props.isOpen ? 'block' : 'none'};
   margin-top: 0.3rem;
+  min-width: 200px;
+  width: max-content;
+  max-width: 300px;
   
   @media (max-width: 768px) {
     border-radius: 12px;
     padding: 0.5rem;
+    min-width: 180px;
+    max-width: 280px;
   }
   
   @media (max-width: 480px) {
     border-radius: 10px;
     padding: 0.4rem;
+    min-width: 160px;
+    max-width: 250px;
   }
 `;
 
@@ -175,6 +182,9 @@ const DropdownItem = styled.div`
   font-size: 0.8rem;
   color: #333;
   transition: background-color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   
   &:hover {
     background-color: #e3f2fd;
@@ -209,14 +219,30 @@ const PersonInfo = styled.div`
 `;
 
 const PersonLabel = styled.div`
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: #333;
+  
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const PersonSubtext = styled.div`
   font-size: 0.7rem;
   color: #666;
+  
+  @media (max-width: 768px) {
+    font-size: 0.65rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.6rem;
+  }
 `;
 
 const CounterControls = styled.div`
@@ -282,6 +308,41 @@ const SearchButton = styled.button`
     padding: 0.4rem 0.8rem;
     font-size: 0.7rem;
     border-radius: 12px;
+  }
+`;
+
+const PersonDropdown = styled.div<{ isOpen: boolean }>`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 0.6rem;
+  z-index: 1000;
+  display: ${props => props.isOpen ? 'block' : 'none'};
+  margin-top: 0.3rem;
+  min-width: 250px;
+  width: max-content;
+  max-width: 350px;
+  
+  @media (max-width: 768px) {
+    border-radius: 12px;
+    padding: 0.5rem;
+    min-width: 220px;
+    max-width: 320px;
+    left: -80px;
+    right: -20px;
+  }
+  
+  @media (max-width: 480px) {
+    border-radius: 10px;
+    padding: 0.4rem;
+    min-width: 200px;
+    max-width: 280px;
+    left: -60px;
+    right: -10px;
   }
 `;
 
@@ -426,7 +487,7 @@ const SearchSection: React.FC = () => {
             <FieldLabel>Kişi Sayısı</FieldLabel>
             <FieldValue>{getPersonDisplayText()}</FieldValue>
           </FieldButton>
-          <Dropdown isOpen={openField === 'kisiSayisi'}>
+          <PersonDropdown isOpen={openField === 'kisiSayisi'}>
             <PersonCounter>
               <PersonInfo>
                 <PersonLabel>Yetişkin</PersonLabel>
@@ -502,7 +563,7 @@ const SearchSection: React.FC = () => {
                 </CounterButton>
               </CounterControls>
             </PersonCounter>
-          </Dropdown>
+          </PersonDropdown>
         </SearchField>
 
         <SearchButton>

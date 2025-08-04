@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Link, useLocation } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   background-color: white;
@@ -11,28 +12,34 @@ const HeaderContainer = styled.header`
   box-shadow: none;
   border-bottom: none;
   position: relative;
-  
+
   @media (max-width: 768px) {
     padding: 0 40px;
     height: 70px;
   }
-  
+
   @media (max-width: 480px) {
     padding: 0 25px;
     height: 60px;
   }
 `;
 
-const Logo = styled.div`
+const Logo = styled(Link)`
   font-family: 'GT Walsheim', 'Inter', sans-serif;
   font-size: 1.8rem;
   font-weight: 700;
   color: #333;
-  
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #2196f3;
+  }
+
   @media (max-width: 768px) {
     font-size: 1.5rem;
   }
-  
+
   @media (max-width: 480px) {
     font-size: 1.3rem;
   }
@@ -42,11 +49,11 @@ const Navigation = styled.nav<{ isOpen: boolean }>`
   display: flex;
   align-items: center;
   gap: 40px;
-  
+
   @media (max-width: 768px) {
     gap: 25px;
   }
-  
+
   @media (max-width: 480px) {
     display: none;
   }
@@ -54,7 +61,7 @@ const Navigation = styled.nav<{ isOpen: boolean }>`
 
 const MobileNavigation = styled.nav<{ isOpen: boolean }>`
   display: none;
-  
+
   @media (max-width: 480px) {
     display: ${props => props.isOpen ? 'flex' : 'none'};
     position: absolute;
@@ -69,7 +76,7 @@ const MobileNavigation = styled.nav<{ isOpen: boolean }>`
   }
 `;
 
-const NavLink = styled.a`
+const NavLink = styled(Link)<{ $isActive: boolean }>`
   font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
   font-weight: 500;
@@ -77,33 +84,32 @@ const NavLink = styled.a`
   text-decoration: none;
   transition: color 0.2s ease;
   position: relative;
-  
+
   &::after {
     content: '';
     position: absolute;
     bottom: -5px;
     left: 50%;
     transform: translateX(-50%);
-    width: 0;
+    width: ${props => props.$isActive ? '60%' : '0'};
     height: 2px;
     background-color: #333;
     transition: width 0.2s ease;
   }
-  
+
   &:hover::after {
     width: 60%;
   }
-  
+
   @media (max-width: 768px) {
     font-size: 0.85rem;
   }
-  
+
   @media (max-width: 480px) {
     font-size: 1rem;
     padding: 15px 0;
     width: 100%;
     text-align: center;
-    
     &::after {
       display: none;
     }
@@ -121,17 +127,17 @@ const LoginButton = styled.button`
   padding: 8px 20px;
   cursor: pointer;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background-color: #bbdefb;
     border-color: #bbdefb;
   }
-  
+
   @media (max-width: 768px) {
     font-size: 0.8rem;
     padding: 6px 16px;
   }
-  
+
   @media (max-width: 480px) {
     font-size: 0.9rem;
     padding: 8px 18px;
@@ -144,7 +150,7 @@ const HamburgerButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 8px;
-  
+
   @media (max-width: 480px) {
     display: flex;
     flex-direction: column;
@@ -157,15 +163,15 @@ const HamburgerLine = styled.span<{ isOpen: boolean }>`
   height: 3px;
   background-color: #333;
   transition: all 0.3s ease;
-  
+
   &:nth-child(1) {
     transform: ${props => props.isOpen ? 'rotate(45deg) translate(6px, 6px)' : 'none'};
   }
-  
+
   &:nth-child(2) {
     opacity: ${props => props.isOpen ? '0' : '1'};
   }
-  
+
   &:nth-child(3) {
     transform: ${props => props.isOpen ? 'rotate(-45deg) translate(6px, -6px)' : 'none'};
   }
@@ -173,6 +179,7 @@ const HamburgerLine = styled.span<{ isOpen: boolean }>`
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -180,30 +187,30 @@ const Header: React.FC = () => {
 
   return (
     <HeaderContainer>
-      <Logo>TekneGo</Logo>
-      
+      <Logo to="/">TekneGo</Logo>
+
       {/* Desktop Navigation */}
       <Navigation isOpen={isMobileMenuOpen}>
-        <NavLink href="#yachts">Yatlar</NavLink>
-        <NavLink href="#pricing">Fiyatlandırma</NavLink>
-        <NavLink href="#how-it-works">Nasıl Çalışır?</NavLink>
-        <NavLink href="#contact">İletişim</NavLink>
+        <NavLink to="/yachts" $isActive={location.pathname === '/yachts'}>Yatlar</NavLink>
+        <NavLink to="#pricing" $isActive={false}>Fiyatlandırma</NavLink>
+        <NavLink to="#how-it-works" $isActive={false}>Nasıl Çalışır?</NavLink>
+        <NavLink to="#contact" $isActive={false}>İletişim</NavLink>
         <LoginButton>Oturum Aç</LoginButton>
       </Navigation>
-      
+
       {/* Mobile Hamburger Button */}
       <HamburgerButton onClick={toggleMobileMenu}>
         <HamburgerLine isOpen={isMobileMenuOpen} />
         <HamburgerLine isOpen={isMobileMenuOpen} />
         <HamburgerLine isOpen={isMobileMenuOpen} />
       </HamburgerButton>
-      
+
       {/* Mobile Navigation Menu */}
       <MobileNavigation isOpen={isMobileMenuOpen}>
-        <NavLink href="#yachts">Yatlar</NavLink>
-        <NavLink href="#pricing">Fiyatlandırma</NavLink>
-        <NavLink href="#how-it-works">Nasıl Çalışır?</NavLink>
-        <NavLink href="#contact">İletişim</NavLink>
+        <NavLink to="/yachts" $isActive={location.pathname === '/yachts'}>Yatlar</NavLink>
+        <NavLink to="#pricing" $isActive={false}>Fiyatlandırma</NavLink>
+        <NavLink to="#how-it-works" $isActive={false}>Nasıl Çalışır?</NavLink>
+        <NavLink to="#contact" $isActive={false}>İletişim</NavLink>
         <LoginButton>Oturum Aç</LoginButton>
       </MobileNavigation>
     </HeaderContainer>
